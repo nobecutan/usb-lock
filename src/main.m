@@ -9,6 +9,7 @@
 
 #include <Foundation/Foundation.h>
 #include <IOKit/usb/IOUSBLib.h>
+#include <AppKit/AppKit.h>
 
 static void tokenInsertCallback(void* refcon, io_iterator_t portIterator)
 {
@@ -34,10 +35,14 @@ static void tokenRemoveCallback(void* refcon, io_iterator_t portIterator)
 	};
 
 	if (match) {
-		io_registry_entry_t r = IORegistryEntryFromPath(kIOMasterPortDefault, "IOService:/IOResources/IODisplayWrangler");
-		if (r) {
-			IORegistryEntrySetCFProperty(r, CFSTR("IORequestIdle"), kCFBooleanTrue);
-			IOObjectRelease(r);
+		if( NSAlternateKeyMask & [NSEvent modifierFlags] ){
+			NSLog(@"Prevent screen lock for pressed option key");
+		} else {
+			io_registry_entry_t r = IORegistryEntryFromPath(kIOMasterPortDefault, "IOService:/IOResources/IODisplayWrangler");
+			if (r) {
+				IORegistryEntrySetCFProperty(r, CFSTR("IORequestIdle"), kCFBooleanTrue);
+				IOObjectRelease(r);
+			}
 		}
 	}
 }
