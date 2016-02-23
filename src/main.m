@@ -10,6 +10,37 @@
 #include <Foundation/Foundation.h>
 #include <IOKit/usb/IOUSBLib.h>
 #include <AppKit/AppKit.h>
+#include "iTunes.h"
+
+static BOOL wasITunesRunning = false;
+static iTunesApplication *iTunes = 0;
+
+static void lockOrUnlockScreen(CFBooleanRef doLock) {
+	io_registry_entry_t ioRegistry = IORegistryEntryFromPath(kIOMasterPortDefault, kIOServicePlane ":/IOResources/IODisplayWrangler");
+	kern_return_t kr;
+	if (ioRegistry) {
+		kr = IORegistryEntrySetCFProperty(ioRegistry, CFSTR("IORequestIdle"), doLock);
+		IOObjectRelease(ioRegistry);
+		if(kr) {
+			NSLog(@"usb-lock: Failed to %@ the screens: 0x%x", doLock == kCFBooleanTrue ? @"lock" : @"unlock", kr);
+		}
+	}
+}
+
+static void stopITunesIfPlaying() {
+	if ( [iTunes isRunning] ) {
+		wasITunesRunning = [iTunes playerState] == iTunesEPlSPlaying;
+		if ( wasITunesRunning ) {
+			[iTunes playpause];
+		}
+	}
+}
+
+static void resumeITunes() {
+	if ( [iTunes isRunning] && wasITunesRunning && [iTunes playerState] != iTunesEPlSPlaying ) {
+		[iTunes playpause];
+	}
+}
 
 static void tokenInsertCallback(void* refcon, io_iterator_t portIterator)
 {
@@ -19,11 +50,8 @@ static void tokenInsertCallback(void* refcon, io_iterator_t portIterator)
 	};
 
 	if (match) {
-		io_registry_entry_t r = IORegistryEntryFromPath(kIOMasterPortDefault, "IOService:/IOResources/IODisplayWrangler");
-		if (r) {
-			IORegistryEntrySetCFProperty(r, CFSTR("IORequestIdle"), kCFBooleanFalse);
-			IOObjectRelease(r);
-		}
+		lockOrUnlockScreen(kCFBooleanFalse);
+		resumeITunes();
 	}
 }
 
@@ -38,11 +66,8 @@ static void tokenRemoveCallback(void* refcon, io_iterator_t portIterator)
 		if( NSAlternateKeyMask & [NSEvent modifierFlags] ){
 			NSLog(@"Prevent screen lock for pressed option key");
 		} else {
-			io_registry_entry_t r = IORegistryEntryFromPath(kIOMasterPortDefault, "IOService:/IOResources/IODisplayWrangler");
-			if (r) {
-				IORegistryEntrySetCFProperty(r, CFSTR("IORequestIdle"), kCFBooleanTrue);
-				IOObjectRelease(r);
-			}
+			stopITunesIfPlaying();
+			lockOrUnlockScreen(kCFBooleanTrue);
 		}
 	}
 }
@@ -142,6 +167,8 @@ static void writePlist(CFStringRef prg, CFStringRef vID, CFStringRef pID) {
 
 int main(int argc, char **argv)
 {
+	iTunes = [SBApplication applicationWithBundleIdentifier:@"com.apple.iTunes"];
+
 	io_iterator_t portIterator = 0;
 	IONotificationPortRef notificationObject = 0;
 	CFNumberRef vid_num = 0;

@@ -7,8 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		D97A833E1BB046430027C901 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = D97A833D1BB046430027C901 /* main.m */; settings = {ASSET_TAGS = (); }; };
+		D97A833E1BB046430027C901 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = D97A833D1BB046430027C901 /* main.m */; };
 		D97A83421BB047720027C901 /* usb-lock in Copy Files */ = {isa = PBXBuildFile; fileRef = D97A83291BB0418E0027C901 /* usb-lock */; };
+		D9BAE8E11BFDD6F900706CCA /* ScriptingBridge.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D9BAE8E01BFDD6F900706CCA /* ScriptingBridge.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -37,6 +38,8 @@
 /* Begin PBXFileReference section */
 		D97A83291BB0418E0027C901 /* usb-lock */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "usb-lock"; sourceTree = BUILT_PRODUCTS_DIR; };
 		D97A833D1BB046430027C901 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = src/main.m; sourceTree = "<group>"; };
+		D9BAE8DF1BFDD6B700706CCA /* iTunes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iTunes.h; sourceTree = "<group>"; };
+		D9BAE8E01BFDD6F900706CCA /* ScriptingBridge.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ScriptingBridge.framework; path = System/Library/Frameworks/ScriptingBridge.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -44,6 +47,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D9BAE8E11BFDD6F900706CCA /* ScriptingBridge.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -53,6 +57,7 @@
 		D97A83201BB0418E0027C901 = {
 			isa = PBXGroup;
 			children = (
+				D9BAE8E01BFDD6F900706CCA /* ScriptingBridge.framework */,
 				D97A833C1BB046100027C901 /* src */,
 				D97A832A1BB0418E0027C901 /* Products */,
 			);
@@ -70,6 +75,7 @@
 		D97A833C1BB046100027C901 /* src */ = {
 			isa = PBXGroup;
 			children = (
+				D9BAE8DF1BFDD6B700706CCA /* iTunes.h */,
 				D97A833D1BB046430027C901 /* main.m */,
 			);
 			name = src;
@@ -252,6 +258,7 @@
 				D97A83321BB0418E0027C901 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
