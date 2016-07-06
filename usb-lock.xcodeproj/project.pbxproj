@@ -8,37 +8,19 @@
 
 /* Begin PBXBuildFile section */
 		D97A833E1BB046430027C901 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = D97A833D1BB046430027C901 /* main.m */; };
-		D97A83421BB047720027C901 /* usb-lock in Copy Files */ = {isa = PBXBuildFile; fileRef = D97A83291BB0418E0027C901 /* usb-lock */; };
+		D9844C3B1D2D2F50007FB125 /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D9844C3A1D2D2F50007FB125 /* AppKit.framework */; };
+		D9844C3D1D2D2F85007FB125 /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D9844C3C1D2D2F85007FB125 /* IOKit.framework */; };
+		D9844C3F1D2D2FBC007FB125 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D9844C3E1D2D2FBC007FB125 /* Foundation.framework */; };
 		D9BAE8E11BFDD6F900706CCA /* ScriptingBridge.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D9BAE8E01BFDD6F900706CCA /* ScriptingBridge.framework */; };
 /* End PBXBuildFile section */
 
-/* Begin PBXCopyFilesBuildPhase section */
-		D97A83271BB0418E0027C901 /* Copy Files */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 8;
-			dstPath = /usr/local/bin;
-			dstSubfolderSpec = 0;
-			files = (
-				D97A83421BB047720027C901 /* usb-lock in Copy Files */,
-			);
-			name = "Copy Files";
-			runOnlyForDeploymentPostprocessing = 1;
-		};
-		D97A83431BB0479B0027C901 /* CopyFiles */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 8;
-			dstPath = "~/Library/LaunchAgents";
-			dstSubfolderSpec = 0;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 1;
-		};
-/* End PBXCopyFilesBuildPhase section */
-
 /* Begin PBXFileReference section */
 		D97A83291BB0418E0027C901 /* usb-lock */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "usb-lock"; sourceTree = BUILT_PRODUCTS_DIR; };
-		D97A833D1BB046430027C901 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = src/main.m; sourceTree = "<group>"; };
-		D9BAE8DF1BFDD6B700706CCA /* iTunes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iTunes.h; sourceTree = "<group>"; };
+		D97A833D1BB046430027C901 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; name = main.m; path = src/main.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		D9844C3A1D2D2F50007FB125 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
+		D9844C3C1D2D2F85007FB125 /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = System/Library/Frameworks/IOKit.framework; sourceTree = SDKROOT; };
+		D9844C3E1D2D2FBC007FB125 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		D9BAE8DF1BFDD6B700706CCA /* iTunes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = iTunes.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		D9BAE8E01BFDD6F900706CCA /* ScriptingBridge.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ScriptingBridge.framework; path = System/Library/Frameworks/ScriptingBridge.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
@@ -48,6 +30,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				D9BAE8E11BFDD6F900706CCA /* ScriptingBridge.framework in Frameworks */,
+				D9844C3B1D2D2F50007FB125 /* AppKit.framework in Frameworks */,
+				D9844C3D1D2D2F85007FB125 /* IOKit.framework in Frameworks */,
+				D9844C3F1D2D2FBC007FB125 /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -57,7 +42,7 @@
 		D97A83201BB0418E0027C901 = {
 			isa = PBXGroup;
 			children = (
-				D9BAE8E01BFDD6F900706CCA /* ScriptingBridge.framework */,
+				D9844C391D2D2F30007FB125 /* Frameworks */,
 				D97A833C1BB046100027C901 /* src */,
 				D97A832A1BB0418E0027C901 /* Products */,
 			);
@@ -81,6 +66,17 @@
 			name = src;
 			sourceTree = "<group>";
 		};
+		D9844C391D2D2F30007FB125 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				D9844C3A1D2D2F50007FB125 /* AppKit.framework */,
+				D9844C3E1D2D2FBC007FB125 /* Foundation.framework */,
+				D9844C3C1D2D2F85007FB125 /* IOKit.framework */,
+				D9BAE8E01BFDD6F900706CCA /* ScriptingBridge.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -90,8 +86,6 @@
 			buildPhases = (
 				D97A83251BB0418E0027C901 /* Sources */,
 				D97A83261BB0418E0027C901 /* Frameworks */,
-				D97A83271BB0418E0027C901 /* Copy Files */,
-				D97A83431BB0479B0027C901 /* CopyFiles */,
 			);
 			buildRules = (
 			);
@@ -165,6 +159,7 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "Mac Developer: christof.rath@gmail.com (R48BT52KH8)";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -183,7 +178,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = macosx;
@@ -207,6 +202,7 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "Mac Developer: christof.rath@gmail.com (R48BT52KH8)";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
@@ -219,7 +215,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = macosx;
 			};
@@ -228,6 +224,8 @@
 		D97A83311BB0418E0027C901 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				DSTROOT = "/tmp/$(PROJECT_NAME).dst";
+				INSTALL_PATH = /usr/local/bin;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -235,6 +233,11 @@
 		D97A83321BB0418E0027C901 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				DEPLOYMENT_LOCATION = YES;
+				DEPLOYMENT_POSTPROCESSING = YES;
+				DSTROOT = /;
+				INSTALL_DIR = /usr/local/bin;
+				INSTALL_PATH = /usr/local/bin;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
