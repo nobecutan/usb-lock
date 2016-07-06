@@ -137,6 +137,14 @@ static void listUSBDevice(int *i, io_service_t usbDevice, int *vArr, int *pArr) 
 	(*i)++;
 }
 
+#ifndef DEBUG
+static NSString * getLaunchAgentPath() {
+	NSArray *paths = NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES);
+	NSString *librarayDirectory = [paths objectAtIndex:0];
+	return [librarayDirectory stringByAppendingPathComponent:@"LaunchAgents/be.tuomo.usb-lock.plist"];
+}
+#endif
+
 static void writePlist(CFStringRef prg, CFStringRef vID, CFStringRef pID) {
 	NSMutableDictionary *rootObj = [NSMutableDictionary dictionaryWithCapacity:3];
 	NSArray *prgArgs = 0;
@@ -147,7 +155,7 @@ static void writePlist(CFStringRef prg, CFStringRef vID, CFStringRef pID) {
 		prgArgs = [NSArray arrayWithObjects: (__bridge id _Nonnull)(prg), vID, pID, nil];
 	}
 
-	[rootObj setObject:@"at.tugraz.iaik.usb-lock" forKey:@"Label"];
+	[rootObj setObject:@"be.tuomo.usb-lock" forKey:@"Label"];
 	[rootObj setObject:prgArgs forKey:@"ProgramArguments"];
 	[rootObj setValue:[NSNumber numberWithBool:YES]	forKey:@"KeepAlive"];
 
@@ -157,9 +165,7 @@ static void writePlist(CFStringRef prg, CFStringRef vID, CFStringRef pID) {
 	NSData * data =  [NSPropertyListSerialization dataWithPropertyList:rootObj format:format options:NSPropertyListImmutable error:&error];
 	NSLog(@"Plist =%@",[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]);
 #else
-	NSArray *paths = NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES);
-	NSString *librarayDirectory = [paths objectAtIndex:0];
-	NSString *path = [librarayDirectory stringByAppendingPathComponent:@"LaunchAgents/at.tugraz.iaik.usb-lock.plist"];
+	NSString *path = getLaunchAgentPath();
 	[rootObj writeToFile:path atomically:YES];
 	printf("Start script successfully written.\nTo launch the service now call:\n\n  launchctl load %s\n\n", [path cStringUsingEncoding:NSUTF8StringEncoding]);
 #endif
