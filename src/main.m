@@ -79,8 +79,9 @@ static int usage(char *program, char *error)
 	}
 
 	printf("Usage: %s vendorId [productId]\n", program);
-	printf("  e.g. %s 0x1050\n\n", program);
-	printf("  or:  %s config\n\n", program);
+	printf("  e.g. %s 0x1050 0x1002\n\n", program);
+	printf("  or:  %s install\n", program);
+	printf("  or:  %s remove\n\n", program);
 	return error == 0 ? 1 : 2;
 }
 
@@ -138,6 +139,19 @@ static void listUSBDevice(int *i, io_service_t usbDevice, int *vArr, int *pArr) 
 }
 
 #ifndef DEBUG
+static void callLaunchctl(NSString *cmd, NSString *path) {
+	NSPipe *pipe = [NSPipe pipe];
+
+	NSTask *task = [[NSTask alloc] init];
+	task.launchPath = @"/bin/launchctl";
+	task.arguments = @[cmd, path];
+	task.standardOutput = pipe;
+	task.standardError = pipe;
+
+	[task launch];
+	[task waitUntilExit];
+}
+
 static NSString * getLaunchAgentPath() {
 	NSArray *paths = NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES);
 	NSString *librarayDirectory = [paths objectAtIndex:0];
@@ -166,8 +180,11 @@ static void writePlist(CFStringRef prg, CFStringRef vID, CFStringRef pID) {
 	NSLog(@"Plist =%@",[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]);
 #else
 	NSString *path = getLaunchAgentPath();
+
+	callLaunchctl(@"unload", path);
 	[rootObj writeToFile:path atomically:YES];
-	printf("Start script successfully written.\nTo launch the service now call:\n\n  launchctl load %s\n\n", [path cStringUsingEncoding:NSUTF8StringEncoding]);
+	callLaunchctl(@"load", path);
+	printf("Start script successfully written and loaded.");
 #endif
 }
 
@@ -184,7 +201,20 @@ int main(int argc, char **argv)
 		return usage(argv[0], 0);
 	}
 
-	if (strcmp(argv[1], "config") != 0) {
+	if (strcmp(argv[1], "remove") == 0) {
+#ifdef DEBUG
+		NSLog(@"usb-lock LaunchAgent would be removed...");
+#else
+		NSString *path = getLaunchAgentPath();
+		callLaunchctl(@"unload", path);
+		NSError *error = nil;
+		[[NSFileManager defaultManager] removeItemAtPath:path error:&error];
+#endif
+
+		return 0;
+	}
+
+	if (strcmp(argv[1], "install") != 0) {
 		NSLog(@"Parsing vendor ID: %s", argv[1]);
 		int vid = EOF;
 		if (sscanf(argv[1], "%x", &vid) != 1) {
@@ -246,7 +276,7 @@ int main(int argc, char **argv)
 			return 4;
 		}
 		CFStringRef prg, vID, pID;
-		prg = CFStringCreateWithFormat(NULL, NULL, CFSTR("%s"), argv[0]);
+		prg = CFStringCreateWithFormat(NULL, NULL, CFSTR("%s"), [[[NSBundle mainBundle] executablePath] cStringUsingEncoding:NSUTF8StringEncoding]);
 		vID = CFStringCreateWithFormat(NULL, NULL, CFSTR("0x%04x"), vArr[n]);
 		if (pArr[n] == -1) {
 			pID = 0;
@@ -255,7 +285,7 @@ int main(int argc, char **argv)
 		}
 
 		writePlist(prg, vID, pID);
-	} else {
+	} else { // Execute the thing
 		// Lock screen on removal
 		IOServiceAddMatchingNotification(notificationObject, kIOTerminatedNotification, myUSBMatchDictionary, tokenRemoveCallback, 0, &portIterator);
 		while (IOIteratorNext(portIterator)) {}; // Run out the iterator or notifications won't start (you can also use it to iterate the available devices).
