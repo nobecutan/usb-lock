@@ -36,6 +36,12 @@ static void stopITunesIfPlaying() {
 	}
 }
 
+static void stopViscosityVPN() {
+	NSString *myScript = @"tell application \"Viscosity\" to disconnectall";
+	NSAppleScript *script = [[NSAppleScript alloc] initWithSource:myScript];
+	[script executeAndReturnError:nil];
+}
+
 static void resumeITunes() {
 	if ( [iTunes isRunning] && wasITunesRunning && [iTunes playerState] != iTunesEPlSPlaying ) {
 		[iTunes playpause];
@@ -63,9 +69,10 @@ static void tokenRemoveCallback(void* refcon, io_iterator_t portIterator)
 	};
 
 	if (match) {
-		if( NSAlternateKeyMask & [NSEvent modifierFlags] ){
+		if( NSEventModifierFlagOption & [NSEvent modifierFlags] ){
 			NSLog(@"Prevent screen lock for pressed option key");
 		} else {
+			stopViscosityVPN();
 			stopITunesIfPlaying();
 			lockOrUnlockScreen(kCFBooleanTrue);
 		}
@@ -190,7 +197,7 @@ static void writePlist(CFStringRef prg, CFStringRef vID, CFStringRef pID) {
 
 int main(int argc, char **argv)
 {
-	iTunes = [SBApplication applicationWithBundleIdentifier:@"com.apple.iTunes"];
+	iTunes = [SBApplication applicationWithBundleIdentifier:@"com.apple.Music"];
 
 	io_iterator_t portIterator = 0;
 	IONotificationPortRef notificationObject = 0;
