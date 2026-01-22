@@ -12,6 +12,7 @@
 		D9844C3D1D2D2F85007FB125 /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D9844C3C1D2D2F85007FB125 /* IOKit.framework */; };
 		D9844C3F1D2D2FBC007FB125 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D9844C3E1D2D2FBC007FB125 /* Foundation.framework */; };
 		D9BAE8E11BFDD6F900706CCA /* ScriptingBridge.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D9BAE8E01BFDD6F900706CCA /* ScriptingBridge.framework */; };
+		D9D8B3452F22DCE500220DC5 /* login.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D9D8B3442F22DCE500220DC5 /* login.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,6 +23,7 @@
 		D9844C3E1D2D2FBC007FB125 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		D9BAE8DF1BFDD6B700706CCA /* iTunes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = iTunes.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		D9BAE8E01BFDD6F900706CCA /* ScriptingBridge.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ScriptingBridge.framework; path = System/Library/Frameworks/ScriptingBridge.framework; sourceTree = SDKROOT; };
+		D9D8B3442F22DCE500220DC5 /* login.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = login.framework; path = ../../../../../System/Library/PrivateFrameworks/login.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -29,6 +31,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D9D8B3452F22DCE500220DC5 /* login.framework in Frameworks */,
 				D9BAE8E11BFDD6F900706CCA /* ScriptingBridge.framework in Frameworks */,
 				D9844C3B1D2D2F50007FB125 /* AppKit.framework in Frameworks */,
 				D9844C3D1D2D2F85007FB125 /* IOKit.framework in Frameworks */,
@@ -69,6 +72,7 @@
 		D9844C391D2D2F30007FB125 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				D9D8B3442F22DCE500220DC5 /* login.framework */,
 				D9844C3A1D2D2F50007FB125 /* AppKit.framework */,
 				D9844C3E1D2D2FBC007FB125 /* Foundation.framework */,
 				D9844C3C1D2D2F85007FB125 /* IOKit.framework */,
@@ -252,8 +256,10 @@
 				DEVELOPMENT_TEAM = 2YN7FUYA22;
 				DSTROOT = "/tmp/$(PROJECT_NAME).dst";
 				INSTALL_PATH = /usr/local/bin;
+				MACOSX_DEPLOYMENT_TARGET = 15.6;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				SYSTEM_FRAMEWORK_SEARCH_PATHS = "$(inherited) $(SYSTEM_LIBRARY_DIR)/PrivateFrameworks";
 			};
 			name = Debug;
 		};
@@ -268,8 +274,10 @@
 				DSTROOT = /;
 				INSTALL_DIR = /usr/local/bin;
 				INSTALL_PATH = /usr/local/bin;
+				MACOSX_DEPLOYMENT_TARGET = 15.6;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				SYSTEM_FRAMEWORK_SEARCH_PATHS = "$(inherited) $(SYSTEM_LIBRARY_DIR)/PrivateFrameworks";
 			};
 			name = Release;
 		};

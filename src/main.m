@@ -15,8 +15,18 @@
 static BOOL wasITunesRunning = false;
 static iTunesApplication *iTunes = 0;
 
+// Deklaration der Funktion aus login.framework (private API)
+extern void SACLockScreenImmediate(void);
+
 static void lockOrUnlockScreen(CFBooleanRef doLock) {
-	io_registry_entry_t ioRegistry = IORegistryEntryFromPath(kIOMasterPortDefault, kIOServicePlane ":/IOResources/IODisplayWrangler");
+	@autoreleasepool {
+		if (doLock) {
+			// Bildschirm sofort sperren
+			SACLockScreenImmediate();
+		}
+	}
+/*
+	io_registry_entry_t ioRegistry = IORegistryEntryFromPath(kIOMainPortDefault, kIOServicePlane ":/IOResources/IODisplayWrangler");
 	kern_return_t kr;
 	if (ioRegistry) {
 		kr = IORegistryEntrySetCFProperty(ioRegistry, CFSTR("IORequestIdle"), doLock);
@@ -25,9 +35,10 @@ static void lockOrUnlockScreen(CFBooleanRef doLock) {
 			NSLog(@"usb-lock: Failed to %@ the screens: 0x%x", doLock == kCFBooleanTrue ? @"lock" : @"unlock", kr);
 		}
 	}
+*/
 }
 
-static void stopITunesIfPlaying() {
+static void stopITunesIfPlaying(void) {
 	if ( [iTunes isRunning] ) {
 		wasITunesRunning = [iTunes playerState] == iTunesEPlSPlaying;
 		if ( wasITunesRunning ) {
@@ -36,13 +47,13 @@ static void stopITunesIfPlaying() {
 	}
 }
 
-static void stopViscosityVPN() {
+static void stopViscosityVPN(void) {
 	NSString *myScript = @"tell application \"Viscosity\" to disconnectall";
 	NSAppleScript *script = [[NSAppleScript alloc] initWithSource:myScript];
 	[script executeAndReturnError:nil];
 }
 
-static void resumeITunes() {
+static void resumeITunes(void) {
 	if ( [iTunes isRunning] && wasITunesRunning && [iTunes playerState] != iTunesEPlSPlaying ) {
 		[iTunes playpause];
 	}
@@ -56,7 +67,6 @@ static void tokenInsertCallback(void* refcon, io_iterator_t portIterator)
 	};
 
 	if (match) {
-		lockOrUnlockScreen(kCFBooleanFalse);
 		resumeITunes();
 	}
 }
@@ -256,7 +266,7 @@ int main(int argc, char **argv)
 		CFRelease(pid_num);
 	}
 
-	notificationObject = IONotificationPortCreate(kIOMasterPortDefault);
+	notificationObject = IONotificationPortCreate(kIOMainPortDefault);
 
 	CFRunLoopAddSource(CFRunLoopGetCurrent(), IONotificationPortGetRunLoopSource(notificationObject), kCFRunLoopDefaultMode);
 
