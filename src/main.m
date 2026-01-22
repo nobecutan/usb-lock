@@ -169,7 +169,7 @@ static void callLaunchctl(NSString *cmd, NSString *path) {
 	[task waitUntilExit];
 }
 
-static NSString * getLaunchAgentPath() {
+static NSString * getLaunchAgentPath(void) {
 	NSArray *paths = NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES);
 	NSString *librarayDirectory = [paths objectAtIndex:0];
 	return [librarayDirectory stringByAppendingPathComponent:@"LaunchAgents/be.tuomo.usb-lock.plist"];
